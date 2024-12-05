@@ -1,36 +1,49 @@
-<!DOCTYPE html>
-<html lang="ua">
+<!DOCTYPE html> 
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Аніме Онлайн</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anime Explorer</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <h1>Аніме Онлайн</h1>
-            <button id="toggle-theme">Перемкнути тему</button>
-        </header>
-
-        <main>
-            <section class="anime-list">
-                <h2>Recently Completed</h2>
-                <div class="list" id="popular-list"></div>
-            </section>
-
-            <section class="anime-list">
-                <h2>New</h2>
-                <div class="list" id="latest-list"></div>
-            </section>
-
-            <section class="anime-list">
-                <h2>Top Rated Manga</h2>
-                <div class="list" id="most-viewed-list"></div>
-            </section>
-        </main>
+  <header>
+    <div class="title-container">
+      <h1>Anime Search</h1>
+      <input type="text" id="search-bar" placeholder="Search for anime..." />
     </div>
+  </header>
+  
+  <!-- Основні секції для аніме -->
+  <main>
+    <section id="popular" class="anime-section">
+      <h2>Popular Anime</h2>
+      <div class="anime-container" id="popular-container"></div>
+    </section>
 
-    <script src="script.js"></script>
+    <section id="airing" class="anime-section">
+      <h2>Airing Anime</h2>
+      <div class="anime-container" id="airing-container"></div>
+    </section>
+
+    <section id="upcoming" class="anime-section">
+      <h2>Upcoming Anime</h2>
+      <div class="anime-container" id="upcoming-container"></div>
+    </section>
+  </main>
+
+  <!-- Модальне вікно для деталей аніме -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <h2 id="anime-title"></h2>
+      <p id="anime-details"></p>
+      <p><strong>Епізоди:</strong> <span id="anime-episodes"></span></p>
+      <p><strong>Рейтинг:</strong> <span id="anime-rating"></span></p>
+      <div id="anime-trailer"></div>
+      <button id="close-modal">Закрити</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
