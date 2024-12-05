@@ -1,104 +1,106 @@
-/* Основні стилі */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background-color: #121212;
-    color: #ffffff;
-    transition: background-color 0.3s, color 0.3s;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #121212;
+  color: #fff;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+.title-container {
+  text-align: center;
+  padding: 20px;
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+#search-bar {
+  padding: 10px;
+  font-size: 16px;
+  margin-top: 10px;
+  width: 80%;
+  border: 2px solid #333;
+  border-radius: 5px;
+  background-color: #1e1e1e;
+  color: #fff;
 }
 
-.header h1 {
-    margin: 0;
-    font-size: 24px;
-    color: #ffffff;
+.anime-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  padding: 20px;
 }
 
-button {
-    padding: 10px 20px;
-    border: none;
-    background-color: #282828;
-    color: #ffffff;
-    border-radius: 5px;
-    cursor: pointer;
+.anime-card {
+  background-color: #222;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s;
+  cursor: pointer;
 }
 
-button:hover {
-    background-color: #3a3a3a;
+.anime-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
 }
 
-.anime-list h2 {
-    font-size: 20px;
-    margin-bottom: 10px;
+.anime-card h3 {
+  font-size: 16px;
+  padding: 10px;
+  text-align: center;
 }
 
-.list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
+.anime-card:hover {
+  transform: scale(1.05);
 }
 
-.card {
-    background-color: #1e1e1e;
-    border-radius: 10px;
-    overflow: hidden;
-    text-align: center;
-    transition: transform 0.3s;
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  overflow-y: auto;
+  z-index: 1000;
 }
 
-.card:hover {
-    transform: scale(1.05);
+.modal.show {
+  display: block;
 }
 
-.card img {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
+.modal-content {
+  background-color: #1e1e1e;
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 800px;
+  color: #fff;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 }
 
-.card-title {
-    font-size: 16px;
-    font-weight: bold;
-    margin: 10px 0;
-    color: #e1e1e1;
+.modal-content h2 {
+  margin: 0 0 10px;
 }
 
-.card-rating {
-    font-size: 14px;
-    color: #bdbdbd;
+.modal-content iframe {
+  width: 100%;
+  height: 400px;
+  margin-top: 10px;
 }
 
-/* Темна тема */
-.dark-mode {
-    background-color: #ffffff;
-    color: #121212;
+#close-modal {
+  background-color: #ff4c4c;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
 }
 
-.dark-mode button {
-    background-color: #dddddd;
-    color: #121212;
-}
-
-.dark-mode .card {
-    background-color: #f4f4f4;
-}
-
-.dark-mode .card-title {
-    color: #333333;
-}
-
-.dark-mode .card-rating {
-    color: #666666;
+#close-modal:hover {
+  background-color: #ff1a1a;
 }
