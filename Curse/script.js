@@ -5,22 +5,32 @@ const popularContainer = document.getElementById('popular-container');
 const airingContainer = document.getElementById('airing-container');
 const upcomingContainer = document.getElementById('upcoming-container');
 
-// Завантаження аніме з API
-async function fetchAnime(category, container) {
+let currentPage = {
+  popular: 1,
+  airing: 1,
+  upcoming: 1
+};
+
+// Завантаження аніме
+async function fetchAnime(category, page, container) {
   let url = "";
   if (category === "popular") {
-    url = "https://api.jikan.moe/v4/top/anime";
+    url = `https://api.jikan.moe/v4/top/anime?page=${page}`;
   } else if (category === "airing") {
-    url = "https://api.jikan.moe/v4/seasons/now";
+    url = `https://api.jikan.moe/v4/seasons/now?page=${page}`;
   } else if (category === "upcoming") {
-    url = "https://api.jikan.moe/v4/seasons/upcoming";
+    url = `https://api.jikan.moe/v4/seasons/upcoming?page=${page}`;
   }
 
   try {
     const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
     const data = await response.json();
 
-    container.innerHTML = '';
     data.data.forEach(anime => {
       const animeCard = document.createElement('div');
       animeCard.classList.add('anime-card');
@@ -32,12 +42,12 @@ async function fetchAnime(category, container) {
       container.appendChild(animeCard);
     });
   } catch (error) {
-    container.innerHTML = '<p>Failed to load anime data. Please try again later.</p>';
     console.error("Error fetching anime data:", error);
+    container.innerHTML = '<p>Failed to load anime data. Please try again later.</p>';
   }
 }
 
-// Показ деталей аніме
+// Показ деталей
 function showDetails(anime) {
   modal.classList.add('show');
   document.getElementById('anime-title').innerText = anime.title;
@@ -64,20 +74,15 @@ closeModalButton.addEventListener('click', () => {
   modal.classList.remove('show');
 });
 
-// Завантаження секцій
-fetchAnime("popular", popularContainer);
-fetchAnime("airing", airingContainer);
-fetchAnime("upcoming", upcomingContainer);
-
-// Обробка пошуку
+// Пошук
 searchBar.addEventListener('keyup', async (event) => {
   if (event.key === 'Enter') {
     const query = searchBar.value.trim();
     if (!query) {
-      // Якщо рядок порожній, повернутися до початкової сторінки
-      fetchAnime("popular", popularContainer);
-      fetchAnime("airing", airingContainer);
-      fetchAnime("upcoming", upcomingContainer);
+      // Якщо рядок порожній, повернути до початкових секцій
+      fetchAnime("popular", 1, popularContainer);
+      fetchAnime("airing", 1, airingContainer);
+      fetchAnime("upcoming", 1, upcomingContainer);
       return;
     }
 
@@ -85,10 +90,9 @@ searchBar.addEventListener('keyup', async (event) => {
     try {
       const response = await fetch(url);
       const data = await response.json();
-      popularContainer.innerHTML = ''; // Очистити контейнери
-      airingContainer.innerHTML = '';
-      upcomingContainer.innerHTML = '';
 
+      [popularContainer, airingContainer, upcomingContainer].forEach(container => container.innerHTML = '');
+      
       data.data.forEach(anime => {
         const animeCard = document.createElement('div');
         animeCard.classList.add('anime-card');
@@ -97,10 +101,26 @@ searchBar.addEventListener('keyup', async (event) => {
           <h3>${anime.title}</h3>
         `;
         animeCard.addEventListener('click', () => showDetails(anime));
-        popularContainer.appendChild(animeCard); // Показувати результати у популярному
+        popularContainer.appendChild(animeCard);
       });
     } catch (error) {
       console.error("Error fetching search results:", error);
     }
   }
+});
+
+// Завантаження початкових даних
+fetchAnime("popular", currentPage.popular, popularContainer);
+fetchAnime("airing", currentPage.airing, airingContainer);
+fetchAnime("upcoming", currentPage.upcoming, upcomingContainer);
+
+// Горизонтальне завантаження при скролі
+[popularContainer, airingContainer, upcomingContainer].forEach((container, index) => {
+  const category = ["popular", "airing", "upcoming"][index];
+  container.addEventListener('scroll', () => {
+    if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 50) {
+      currentPage[category]++;
+      fetchAnime(category, currentPage[category], container);
+    }
+  });
 });
